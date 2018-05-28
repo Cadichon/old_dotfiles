@@ -13,7 +13,9 @@ if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
     . /usr/lib/git-core/git-sh-prompt
 fi
 
-[ -f ~/.yadm.bash_completion ] && source ~/.yadm.bash_completion
+if [[ -e ~/.yadm/bash_completion ]]; then
+    . ~/.yadm/bash_completion
+fi
 
 
 HISTCONTROL=ignoreboth
