@@ -1,0 +1,3 @@
+[submodule "/home/cadichon/.emacs.d"]
+	path = /home/cadichon/.emacs.d
+	url = https://github.com/syl20bnr/spacemacs
