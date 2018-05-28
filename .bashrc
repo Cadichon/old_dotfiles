@@ -1,8 +1,4 @@
-export LD_PRELOAD=
-
 FIGNORE=".o"
-
-eval "$(thefuck --alias fuck)"
 
 xset b off
 
@@ -36,6 +32,7 @@ if ! shopt -oq posix; then
 fi
 
 # GCC Color error
+export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LC_ALL='fr_FR.UTF-8'
 export LANG='en_US.UTF-8'
@@ -78,7 +75,7 @@ alias ip='ip --color'
 alias ipb='ip --color --brief'
 
 
-ANDROID_HOME=/home/cadichon/Android/Sdk
+ANDROID_HOME=~/Android/Sdk
 PATH="${ANDROID_HOME}/tools/bin:${PATH}"
 export ANDROID_HOME PATH
 
