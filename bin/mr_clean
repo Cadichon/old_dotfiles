@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ $# -eq 1 ]
+then
+    path=$1
+else
+    path="."
+fi
+
+echo
+a=$(find $path -name "#*#" -o -name "*~" -o -name "*.gcda" -o -name "*.gcno" | wc -l)
+if [ $a -eq 1 ]
+then
+    phrase="1 element has been deleted !"
+else
+    phrase="$a elements have been deleted"
+fi
+
+if [ $a -eq 0 ]
+then
+    printf "Nothing was found !"
+else
+    printf "Here is what I found :\n\n"
+    find $path -name "#*#" -o -name "*~" -o -name "*.gcda" -o -name "*.gcno"
+    printf "\n$phrase"
+    find $path -name "#*#" -delete -o -name "*~" -delete -o -name "*.gcda" -delete -o -name "*.gcno" -delete
+fi
+printf "\nThanks for using !\n\n"
