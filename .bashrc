@@ -9,8 +9,8 @@ if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
     . /usr/lib/git-core/git-sh-prompt
 fi
 
-if [[ -e ~/.yadm/bash_completion ]]; then
-    . ~/.yadm/bash_completion
+if [[ -f $HOME/.yadm/bash_completion ]]; then
+    . $HOME/.yadm/bash_completion
 fi
 
 
@@ -33,6 +33,9 @@ fi
 
 # GCC Color error
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
+export CC="cc_args gcc"
+export CXX="cc_args g++"
+export ANDROID_HOME=$HOME/Android/Sdk
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LC_ALL='fr_FR.UTF-8'
 export LANG='en_US.UTF-8'
@@ -47,7 +50,7 @@ export LESS_TERMCAP_us=$(printf '\e[04;36m') # enter underline mode - cyan
 export PAGER='most'
 export SAVEHIST=1000
 export WATCH='all'
-export PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/heimdal/bin:/usr/heimdal/sbin:$HOME/bin:/usr/local/bin:/usr/games:."
+export PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/heimdal/bin:/usr/heimdal/sbin:$HOME/bin:/usr/local/bin:/usr/games:${ANDROID_HOME}/tools/bin:${PATH}:."
 export PS1='\[\e[1;37m\]\t` error=$?; if [ $error = 0 ]; then echo "\[\e[32m\] ✔ "; else echo "\[\e[31m\] ✘ [$error] "; fi`\[\e[00;37m\]\u\[\e[01;37m\]:`[[ $(git status 2> \
 /dev/null | head -n2 | tail -n1) != "# Changes to be committed:" ]] && echo "\[\e[31m\]" || echo "\[\e[33m\]"``[[ $(git status 2> /dev/null | tail -\
 n1) != "nothing to commit (working directory clean)" ]] || echo "\[\e[32m\]"`$(__git_ps1 "(%s)\[\e[00m\]")\[\e[01;34m\]\w\[\e[00m\]\$ '
@@ -73,11 +76,3 @@ alias cat="bat"
 alias bat="bat --paging never"
 alias ip='ip --color'
 alias ipb='ip --color --brief'
-
-
-ANDROID_HOME=~/Android/Sdk
-PATH="${ANDROID_HOME}/tools/bin:${PATH}"
-export ANDROID_HOME PATH
-
-export CC="cc_args gcc"
-export CXX="cc_args g++"

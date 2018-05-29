@@ -1,3 +1,6 @@
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
+[submodule "bin/kitty"]
+	path = bin/kitty
+	url = https://github.com/kovidgoyal/kitty
