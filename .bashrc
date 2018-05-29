@@ -69,10 +69,10 @@ alias ne='emacsclient --alternate-editor emacs'
 alias pull='git pull'
 alias sudo='sudo '
 alias valgrind='valgrind '
-alias primusrun='primusrun '
-alias gpp="g++ -W -Wall -Wextra -Werror --std=c++17"
-alias xclip="xclip -selection c"
-alias cat="bat"
-alias bat="bat --paging never"
+alias gpp='g++ -W -Wall -Wextra -Werror --std=c++17'
+alias xclip='xclip -selection c'
+alias cat='bat'
+alias bat='bat --paging never'
 alias ip='ip --color'
 alias ipb='ip --color --brief'
+alias primusrun='vblank_mode=0 primusrun '
