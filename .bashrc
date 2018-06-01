@@ -33,6 +33,7 @@ fi
 
 # GCC Color error
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib/Cello
 export CC="cc_args gcc"
 export CXX="cc_args g++"
 export ANDROID_HOME=$HOME/Android/Sdk
