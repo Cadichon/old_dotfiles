@@ -1,0 +1,43 @@
+#!/bin/bash
+
+git_update () {
+UPSTREAM=${1:-'@{u}'}
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse "$UPSTREAM")
+BASE=$(git merge-base @ "$UPSTREAM")
+
+if [ $LOCAL = $REMOTE ]
+then
+    echo "up-to-date"
+elif [ $LOCAL = $BASE ]
+then
+    echo "pull"
+elif [ $REMOTE = $BASE ]
+then
+    echo "pull"
+else
+    echo "diverged"
+fi
+}
+
+link_kitty () {
+    sudo ln -s $(realpath linux-package/bin/kitty) /usr/bin/kitty
+    sudo ln -s $(realpath linux-package/lib/kitty) /usr/lib/kitty
+    sudo ln -s $(realpath linux-package/share/applications/kitty.desktop) /usr/share/applications/kitty.desktop
+    sudo ln -s $(realpath linux-package/share/icons/hicolor/256x256/apps/kitty.png) /usr/share/icons/hicolor/256x256/apps/kitty.png
+    sudo ln -s $(realpath linux-package/share/terminfo/x/xterm-kitty) /usr/share/terminfo/x/xterm-kitty
+}
+
+cd $HOME/bin/src/kitty
+git fetch
+
+if [ $(git_update) = "pull" ]
+then
+    git pull
+    CC=gcc
+    ./setup.py linux-package
+    link_kitty
+fi
+
+cd -
+exit 0
