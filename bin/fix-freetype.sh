@@ -58,6 +58,9 @@ copy_freetype /usr/share/discord-ptb
 # discord-canary
 copy_freetype /usr/share/discord-canary
 
+# google play music desktop player
+copy_freetype /usr/share/google-play-music-desktop-player
+
 # add you own...
 if [ "" != "$1" ]; then
     copy_freetype "$1"

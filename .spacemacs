@@ -27,7 +27,7 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path '("~/.emacs.d/private/" "~/.layer/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
@@ -38,12 +38,12 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
-     ;; better-defaults
+     better-defaults
      emacs-lisp
      selectric
      asm
-     ;; git
-     ;; markdown
+     git
+     markdown
      ;; org
      (shell :variables
             shell-default-height 20
@@ -52,8 +52,10 @@ values."
      syntax-checking
      python
      ;; version-control
-     (c-c++ :variables c-c++-enable-clang-support t)
+     (c-c++ :variables
+	    c-c++-enable-clang-support t)
      javascript
+     epitech
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -138,7 +140,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Soures Code Pro"
+   dotspacemacs-default-font '("default"
                                :size 13
                                :weight normal
                                :width normal
@@ -331,7 +333,17 @@ before packages are loaded. If you are unsure, you should try in setting them in
                     c-basic-offset 8)
               )
             )
-	(add-hook 'python-mode-hook
+  (add-hook 'makefile-mode-hook
+            (lambda ()
+              (setq-default indent-tabs-mode t
+                            tab-width 8
+                            c-basic-offset 8)
+              (setq indent-tabs-mode t
+                    tab-width 8
+                    c-basic-offset 8)
+              )
+            )
+  (add-hook 'python-mode-hook
             (lambda ()
               (setq-default indent-tabs-mode nil
                             python-indent-offset 4)
@@ -339,179 +351,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
                     python-indent-offset 4)
               )
             )
-    (global-set-key	"" 'std-file-feheader)
-
-  (setq header-epitech		"EPITECH PROJECT, "
-        header-description	"File description:")
-
-  (setq std-c-alist               '( (cs . "/*") (cc . "** ") (ce . "*/") )
-        std-css-alist             '( (cs . "/*") (cc . "** ") (ce . "*/") )
-        std-cpp-alist             '( (cs . "/*") (cc . "** ") (ce . "*/") )
-        std-pov-alist             '( (cs . "//") (cc . "// ") (ce . "//") )
-        std-java-alist            '( (cs . "//") (cc . "// ") (ce . "//") )
-        std-latex-alist           '( (cs . "%%") (cc . "%% ") (ce . "%%") )
-        std-lisp-alist            '( (cs . ";;") (cc . ";; ") (ce . ";;") )
-        std-xdefault-alist        '( (cs . "!!") (cc . "!! ") (ce . "!!") )
-        std-pascal-alist          '( (cs . "{ ") (cc . "   ") (ce . "}" ) )
-        std-makefile-alist        '( (cs . "##") (cc . "## ") (ce . "##") )
-        std-text-alist            '( (cs . "##") (cc . "## ") (ce . "##") )
-        std-fundamental-alist     '( (cs . "  ") (cc . "   ") (ce . "  ") )
-        std-html-alist            '( (cs . "<!--") (cc . "  -- ") (ce . "-->"))
-        std-php-alist		'( (cs . "#!/usr/local/bin/php\n<?php") (cc . "// ")(ce . "//"))
-        std-nroff-alist           '( (cs . "\\\"") (cc . "\\\" ") (ce . "\\\""))
-        std-sscript-alist         '( (cs . "#!/bin/sh")  (cc . "## ") (ce . "##"))
-        std-perl-alist            '( (cs . "#!/usr/local/bin/perl -w")  (cc . "## ")(ce . "##"))
-        std-cperl-alist           '( (cs . "#!/usr/local/bin/perl -w")  (cc . "## ")(ce . "##"))
-        )
-
-  (setq std-modes-alist '(("C"                    . std-c-alist)
-                          ("C/l"                  . std-c-alist)
-                          ("CSS"                  . std-c-alist)
-                          ("PoV"                  . std-pov-alist)
-                          ("C++"                  . std-cpp-alist)
-                          ("C++/l"                . std-cpp-alist)
-                          ("Lisp"                 . std-lisp-alist)
-                          ("Lisp Interaction"     . std-lisp-alist)
-                          ("Emacs-Lisp"           . std-lisp-alist)
-                          ("Fundamental"          . std-fundamental-alist)
-                          ("Shell-script"         . std-sscript-alist)
-                          ("Makefile"             . std-makefile-alist)
-                          ("BSDmakefile"          . std-makefile-alist)
-                          ("GNUmakefile"          . std-makefile-alist)
-                          ("Perl"                 . std-cperl-alist)
-                          ("CPerl"                . std-cperl-alist)
-                          ("xdefault"             . std-xdefault-alist)
-                          ("java"                 . std-java-alist)
-                          ("latex"                . std-latex-alist)
-                          ("Pascal"               . stdp-ascal-alist)
-                          ("Text"                 . std-text-alist)
-                          ("HTML"                 . std-html-alist)
-                          ("PHP"                 . std-php-alist)
-                          ("Nroff"                . std-nroff-alist)
-                          ("TeX"                  . std-latex-alist)
-                          ("LaTeX"                . std-latex-alist))
-        )
-
-  (defun std-get (a)
-    (interactive)
-    (cdr (assoc a (eval (cdr (assoc mode-name std-modes-alist)))))
-    )
-
-  (defun std-file-header ()
-    "Puts a standard header at the beginning of the file.\n(According to mode)"
-    (interactive)
-    (goto-char (point-min))
-    (let ((projname "toto")(projdescription "tiuti"))
-      (setq projname (read-from-minibuffer
-                      (format "Type project name (RETURN to quit) : ")))
-      (setq projdescription (read-from-minibuffer
-                             (format "Type short file description (RETURN to quit) : ")))
-
-      (insert-string (std-get 'cs))
-      (newline)
-      (insert-string (concat (std-get 'cc)
-                             header-epitech
-                             (format-time-string "%Y")))
-      (newline)
-      (insert-string (concat (std-get 'cc)
-                             projname))
-      (newline)
-      (insert-string (concat (std-get 'cc)
-                             header-description))
-      (newline)
-      (insert-string (concat (std-get 'cc)
-                             projdescription))
-      (newline)
-      (insert-string (std-get 'ce))
-      (newline)
-      (newline)))
-
-  (defun insert-std-vertical-comments ()
-    "Inserts vertical comments (according to mode)."
-    (interactive)
-    (beginning-of-line)
-    (insert-string (std-get 'cs))
-    (newline)
-    (let ((ok t)(comment ""))
-      (while ok
-        (setq comment (read-from-minibuffer
-                       (format "Type comment (RETURN to quit) : ")))
-        (if (= 0 (length comment))
-            (setq ok nil)
-          (progn
-            (insert-string (concat (std-get 'cc) comment))
-            (newline)))))
-    (insert-string (std-get 'ce))
-    (newline))
-
-  (defun std-toggle-comment ()
-    "Toggles line comment on or off (according to mode)."
-    (interactive)
-    (save-excursion
-      (let (beg end)
-        (beginning-of-line)
-        (setq beg (point))
-        (end-of-line)
-        (setq end (point))
-        (save-restriction
-          (if (not (equal beg end))
-              (progn
-                (narrow-to-region beg end)
-                (goto-char beg)
-                (if (search-forward (std-get 'cs) end t)
-                    (progn
-                      (beginning-of-line)
-                      (replace-string (std-get 'cs) "")
-                      (replace-string (std-get 'ce) ""))
-                  (progn
-                    (beginning-of-line)
-                    (insert-string (std-get 'cs))
-                    (end-of-line)
-                    (insert-string (std-get 'ce))))))))) 
-    ;;  (indent-according-to-mode)
-    (indent-for-tab-command)
-    (next-line 1))
-
-;;; Added by Eole Wednesday May 29 2002,  1:33:55
-;;; Extended bindings for this package and for commenting code
-
-  (global-set-key "h" 'update-std-header)
-  (global-set-key "" 'std-file-header)
-
-;;;; Generating local keymaps for exotics modes.
-
-;;; In CPerl mode, C-c C-h is used to do some help.
-;;; so it is C-c C-h h
-;;; For working, it requires info pages about perl
-  (add-hook 'cperl-mode-hook
-            '(lambda ()
-               (define-key cperl-mode-map ""
-                 'comment-region)
-               (define-key cperl-mode-map "h"
-                 'std-file-header)))
-
-;; for perl-mode
-  (add-hook 'perl-mode-hook
-            '(lambda ()
-               (define-key perl-mode-map ""
-                 'comment-region)))
-
-;; for all kind of lisp code
-  (add-hook 'emacs-lisp-mode-hook
-            '(lambda ()
-               (define-key emacs-lisp-mode-map  ""
-                 'comment-region)))
-
-  (add-hook 'lisp-mode-hook
-            '(lambda ()
-               (define-key lisp-mode-map  ""
-                 'comment-region)))
-
-;; for La(TeX)-mode
-  (add-hook 'tex-mode-hook
-            '(lambda ()
-               (define-key tex-mode-map ""
-                 'comment-region)))
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
@@ -529,7 +368,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode xterm-color x86-lookup shell-pop nasm-mode multi-term eshell-z eshell-prompt-extras esh-help selectric-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic flycheck-pos-tip pos-tip flycheck helm-company helm-c-yasnippet fuzzy company-statistics company-c-headers company auto-yasnippet yasnippet ac-ispell auto-complete disaster cmake-mode clang-format ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (unfill smeargle selectric-mode orgit mwim magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit ghub let-alist with-editor yapfify xterm-color x86-lookup web-beautify shell-pop pyvenv pytest pyenv-mode py-isort pip-requirements nasm-mode multi-term mmm-mode markdown-toc markdown-mode livid-mode skewer-mode simple-httpd live-py-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc hy-mode helm-pydoc helm-company helm-c-yasnippet gh-md fuzzy flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help disaster cython-mode company-tern dash-functional tern company-statistics company-c-headers company-anaconda company coffee-mode cmake-mode clang-format auto-yasnippet yasnippet anaconda-mode pythonic ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

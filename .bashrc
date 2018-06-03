@@ -9,10 +9,6 @@ if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
     . /usr/lib/git-core/git-sh-prompt
 fi
 
-if [[ -f $HOME/.yadm/bash_completion ]]; then
-    . $HOME/.yadm/bash_completion
-fi
-
 
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
@@ -33,9 +29,6 @@ fi
 
 # GCC Color error
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/local/lib/Cello
-export CC="cc_args gcc"
-export CXX="cc_args g++"
 export ANDROID_HOME=$HOME/Android/Sdk
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LC_ALL='fr_FR.UTF-8'
@@ -77,3 +70,4 @@ alias bat='bat --paging never'
 alias ip='ip --color'
 alias ipb='ip --color --brief'
 alias primusrun='vblank_mode=0 primusrun '
+alias male='make'
