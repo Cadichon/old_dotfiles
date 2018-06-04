@@ -9,6 +9,7 @@ if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
     . /usr/lib/git-core/git-sh-prompt
 fi
 
+. <(npm completion)
 
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
