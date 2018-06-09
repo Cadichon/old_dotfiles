@@ -52,6 +52,7 @@ __prompt_command () {
     local RED="\[\e[0;31m\]"
     local BLUE="\[\e[0;34m\]"
     local GREEN="\[\e[0;32m\]"
+    local YELLOW="\[\e[0;33m\]"
     local RESET="\[\e[0;0m\]"
     PS1="\t "
     if [ $EXIT -eq 0 ]
@@ -63,7 +64,7 @@ __prompt_command () {
     PS1+="\u"
     if which battery-level > /dev/null
     then
-        PS1+=" ($(battery-level)):"
+        PS1+=" ${YELLOW}($(battery-level))${RESET}:"
     else
         PS1+=":"
     fi
