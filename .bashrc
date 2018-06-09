@@ -63,7 +63,14 @@ __prompt_command () {
     PS1+="\u:"
     if [ -d ".git" ]
     then
-        PS1+=$(__git_ps1 "${RED}(%s)${RESET}")
+        local git_str=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
+        local remote=${git_str:0:6}
+        if [ "$remote" = "origin" ]
+        then
+            PS1+=$(__git_ps1 "${RED}(%s)${RESET}")
+        else
+            PS1+="${RED}($git_str)${RESET}"
+        fi
     fi
     PS1+="${BLUE}\w${RESET}\$ "
 }
