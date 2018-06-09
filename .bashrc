@@ -47,6 +47,42 @@ export SAVEHIST=1000
 export WATCH='all'
 export PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/heimdal/bin:/usr/heimdal/sbin:$HOME/bin:/usr/local/bin:/usr/games:${ANDROID_HOME}/tools/bin:${PATH}:."
 export PROMPT_COMMAND=__prompt_command
+
+get_battery () {
+    local BOLT_ICON="\u26A1"
+    local YELLOW="\[\e[0;33m\]"
+    local RED="\[\e[0;31m\]"
+    local GREEN="\[\e[0;32m\]"
+    local RESET="\[\e[0;0m\]"
+    local BATTERY_PATH="/org/freedesktop/UPower/devices/battery_BAT0"
+    local BATTERY_LEVEL=$(upower -i ${BATTERY_PATH} | grep -E "percentage")
+    local BATTERY_STATUS=$(upower -i ${BATTERY_PATH} | grep -E "state")
+
+    BATTERY_LEVEL=${BATTERY_LEVEL//[a-z]/}
+    BATTERY_LEVEL=${BATTERY_LEVEL//[A-Z]/}
+    BATTERY_LEVEL=${BATTERY_LEVEL//[:]/}
+    BATTERY_LEVEL=${BATTERY_LEVEL//[ ]/}
+    BATTERY_LEVEL=${BATTERY_LEVEL::-1}
+    BATTERY_STATUS=${BATTERY_STATUS//[ ]/}
+    BATTERY_STATUS=$(cut -d: -f2 <<< "${BATTERY_STATUS}")
+    if [ $BATTERY_LEVEL -le 33 ]
+    then
+        BATTERY_LEVEL="${RED}${BATTERY_LEVEL}"
+    elif [ $BATTERY_LEVEL -gt 33 ] && [ $BATTERY_LEVEL -le 66 ]
+    then
+        BATTERY_LEVEL="${YELLOW}${BATTERY_LEVEL}"
+    else
+        BATTERY_LEVEL="${GREEN}${BATTERY_LEVEL}"
+    fi
+    if [ "$BATTERY_STATUS" = "charging" ]
+    then
+        BATTERY_LEVEL+="${BOLT_ICON}${RESET}"
+    else
+        BATTERY_LEVEL+="${RESET}"
+    fi
+    echo -e ${BATTERY_LEVEL}
+}
+
 __prompt_command () {
     local EXIT="$?"
     local RED="\[\e[0;31m\]"
@@ -54,6 +90,7 @@ __prompt_command () {
     local GREEN="\[\e[0;32m\]"
     local YELLOW="\[\e[0;33m\]"
     local RESET="\[\e[0;0m\]"
+
     PS1="\t "
     if [ $EXIT -eq 0 ]
     then
@@ -62,12 +99,7 @@ __prompt_command () {
         PS1+="${RED}✘ [$EXIT]${RESET} "
     fi
     PS1+="\u"
-    if which battery-level > /dev/null
-    then
-        PS1+=" ${YELLOW}($(battery-level))${RESET}:"
-    else
-        PS1+=":"
-    fi
+    PS1+=" ($(get_battery)):"
     if [ -d ".git" ]
     then
         local git_str=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
