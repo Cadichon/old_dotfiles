@@ -46,9 +46,28 @@ export PAGER='most'
 export SAVEHIST=1000
 export WATCH='all'
 export PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/heimdal/bin:/usr/heimdal/sbin:$HOME/bin:/usr/local/bin:/usr/games:${ANDROID_HOME}/tools/bin:${PATH}:."
-export PS1='\[\e[1;37m\]\t` error=$?; if [ $error = 0 ]; then echo "\[\e[32m\] ✔ "; else echo "\[\e[31m\] ✘ [$error] "; fi`\[\e[00;37m\]\u\[\e[01;37m\]:`[[ $(git status 2> \
-/dev/null | head -n2 | tail -n1) != "# Changes to be committed:" ]] && echo "\[\e[31m\]" || echo "\[\e[33m\]"``[[ $(git status 2> /dev/null | tail -\
-n1) != "nothing to commit (working directory clean)" ]] || echo "\[\e[32m\]"`$(__git_ps1 "(%s)\[\e[00m\]")\[\e[01;34m\]\w\[\e[00m\]\$ '
+export PROMPT_COMMAND=__prompt_command
+__prompt_command () {
+    local EXIT="$?"
+    local RED="\[\e[0;31m\]"
+    local BLUE="\[\e[0;34m\]"
+    local GREEN="\[\e[0;32m\]"
+    local RESET="\[\e[0;0m\]"
+    PS1="\t "
+    if [ $EXIT -eq 0 ]
+    then
+        PS1+="${GREEN}✔${RESET} "
+    else
+        PS1+="${RED}✘ [$EXIT]${RESET} "
+    fi
+    PS1+="\u:"
+    if [ -d ".git" ]
+    then
+        PS1+=$(__git_ps1 "${RED}(%s)${RESET}")
+    fi
+    PS1+="${BLUE}\w${RESET}\$ "
+}
+export PS1=$PS1
 
 #aliases
 alias dir='dir --color=auto'
@@ -57,6 +76,7 @@ alias vdir='vdir --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias la='ls -lha'
+alias tree='tree -a -I .git -f'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -72,3 +92,4 @@ alias ip='ip --color'
 alias ipb='ip --color --brief'
 alias primusrun='vblank_mode=0 primusrun '
 alias male='make'
+alias makw='make'
