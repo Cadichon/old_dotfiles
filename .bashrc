@@ -60,7 +60,13 @@ __prompt_command () {
     else
         PS1+="${RED}✘ [$EXIT]${RESET} "
     fi
-    PS1+="\u:"
+    PS1+="\u"
+    if which battery-level > /dev/null
+    then
+        PS1+=" ($(battery-level)):"
+    else
+        PS1+=":"
+    fi
     if [ -d ".git" ]
     then
         local git_str=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
