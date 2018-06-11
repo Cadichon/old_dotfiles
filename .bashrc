@@ -102,9 +102,12 @@ __prompt_command () {
     PS1+=" ($(get_battery)):"
     if [ -d ".git" ]
     then
-        local git_str=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
+        local git_str=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2> /dev/null)
         local remote=${git_str:0:6}
-        if [ "$remote" = "origin" ]
+	if [ -z ${git_str} ]
+	then
+	    PS1+=$(__git_ps1 "${RED}(local/%s)${RESET}")
+        elif [ "$remote" = "origin" ]
         then
             PS1+=$(__git_ps1 "${RED}(%s)${RESET}")
         else
